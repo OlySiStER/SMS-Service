@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SMS-Service</title>
+    <link rel="icon" href="img/icon_hospital.png">
+    <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    {{!-- <link rel="stylesheet" href="css/style.css"> --}}
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-fromform">
+        <a class="navbar-brand" href="/home"><img src="img/icon_hospital.png" height="40" alt="icon_hospital"><font style="color: #1ab188;"> SMS-Service</font></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home"><font style="color: white;">Home</font> <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/smsservice"><font style="color: #1ab188;">One Recipient</font> <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/smsservice_multiple"><font style="color: #1ab188;">Multi Recipient</font> <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about"><font style="color: #1ab188;">About</font></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact"><font style="color: #1ab188;">Contact</font></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><font style="color: #1ab188;">Logout</font></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <br><br>
+        <div class="card">
+        <div class="card-header">
+            <h3>Welcome to SMS-Service</h3>
+        </div>
+        <div class="card-body">
+            
+
+            {{!-- <label class="custom-file">
+                <input type="file" id="file2" class="custom-file-input">
+                <span class="custom-file-control"></span>
+            </label> --}}
+            
+        </div>
+        </div>
+    </div>
+    
+    {{> addJS}}
+    <footer style="position: fixed; bottom: 0px; width: 100%; height: 50px; background-color: rgba(19, 35, 47, 0.9);">
+        <center>
+            <font color="#1ab188">
+                Developed by Suphachok Noopan 5730211009 - Copyright &copy; {{getCurrentYear}} 
+                <br> Information Technology, Faculty of Technology and Environment, Prince of Songkla University, Phuket Campus
+            </font>
+        </center>
+    </footer>
+</body>
+</html>
