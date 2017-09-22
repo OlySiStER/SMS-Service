@@ -9,11 +9,16 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var bodyParser = require('body-parser');
 var app = express();
+var expressValidator = require('express-validator');
+var expressSession = require('express-session');
 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(expressValidator());
 hbs.registerPartials(__dirname + '/views/partials')
 app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/assets'));
+app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false}));
 
 var url = 'mongodb://localhost:27017/smsservice';
 
@@ -26,8 +31,16 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-    res.render('home.hbs');
+    res.render('home.hbs', {
+        title: 'Form Validation', 
+        success: req.session.success, 
+        errors: req.session.errors
+    });
+    req.session.errors = null;
+    req.session.success  = null;
 });
+
+
 
 app.get('/about', (req, res) => {
     res.render('about.hbs');
@@ -42,17 +55,41 @@ app.get('/smsservice', (req, res) => {
 });
 
 app.post('/sendsms', (req, res) => {
-    //https://www.intellisoftware.co.uk
-    var intelliSMS = require('intellisms');
-    var sms = new intelliSMS('smsservicehos', 'smsService2017');
-    // console.log(req.body.telno + " " + req.body.msg_data);
-    //number and message 
-    sms.SendMessage({ to: req.body.telno, text: req.body.msg_data }, function(err, id) {
-        if (err) console.log(err);
-        console.log(id);
-        console.log("Send message to " + req.body.fname + " " + req.body.lname + " " + req.body.telno)
-        res.redirect('/smsservice');
+    // https: //www.intellisoftware.co.uk
+    //------------------------------------------------------------------comment to test function (don't send a message)---------------------------
+    // var intelliSMS = require('intellisms');
+    // var sms = new intelliSMS('smsservicehos', 'smsService2017');
+    // // console.log(req.body.telno + " " + req.body.msg_data);
+    // //number and message 
+    // sms.SendMessage({ to: req.body.telno, text: req.body.msg_data }, function(err, id) {
+    //     if (err) console.log(err);
+    //     console.log(id);
+    //     console.log("Send message to " + req.body.fname + " " + req.body.lname + " " + req.body.telno)
+    MongoClient.connect(url, function(err, db) {
+        assert.equal(null, err);
+        db.collection('recipientList').insertOne({
+            // no: list.no,
+            fname: req.body.fname,
+            lname: req.body.lname,
+            tel: req.body.telno,
+            message: req.body.msg_data,
+        }, function(err, result) {
+            assert.equal(null, err);
+            console.log('Item inserted');
+            db.close();
+        });
     });
+        var errors = false;
+        if(errors){
+            req.session.errors = errors;
+            req.session.success = false;
+        }else{
+            req.session.success = true;
+        }
+        console.log("Send one recipients complete !!!");
+        res.redirect('/home');
+    // });
+    //------------------------------------------------------------------comment to test function (don't send a message)---------------------------
 });
 
 app.get('/smsservice_multiple', (req, res) => {
@@ -112,43 +149,46 @@ app.post('/upload', function(req, res) {
                 }
                 // res.json({ error_code: 0, err_desc: null, data: result });
                 // console.log(result[0]);
+                //------------------------------------------------------------------comment to test function (don't send a message)---------------------------
                 for (var i = 0; i < result.length; i++) {
-                    var intelliSMS = require('intellisms');
-                    var sms = new intelliSMS('smsservicehos', 'smsService2017');
+                    // var intelliSMS = require('intellisms');
+                    // var sms = new intelliSMS('smsservicehos', 'smsService2017');
                     // console.log(req.body.telno + " " + req.body.msg_data);
-                    //number and message 
                     var list = result[i];
-                    sms.SendMessage({ to: list.tel, text: list.message }, function(err, id) {
-                        if (err) console.log(err);
-                        console.log(id);
-                        // res.redirect('/smsservice');
-                    });
-                    // var list = result[i];
                     // console.log(list.fname);
-                    // MongoClient.connect(url, function(err, db) {
-                    //     assert.equal(null, err);
-                    //     db.collection('recipientList').insertOne({
-                    //         no: list.no,
-                    //         fname: list.fname,
-                    //         lname: list.lname,
-                    //         tel: list.tel,
-                    //         message: list.message,
-                    //     }, function(err, result) {
-                    //         assert.equal(null, err);
-                    //         console.log('Item inserted');
-                    //         db.close();
-                    //     });
-                    // });
+                    // sms.SendMessage({ to: list.tel, text: list.message }, function(err, id) {
+                    //     if (err) console.log(err);
+                    //     console.log(id);
+                    //     // res.redirect('/smsservice');
+                    // });  
                 }
+                result.forEach(function (doc) {
+                    MongoClient.connect(url, function(err, db) {
+                        assert.equal(null, err);
+                        db.collection('recipientList').insert({
+                            fname: doc.fname,
+                            lname: doc.lname,
+                            tel: doc.tel,
+                            message: doc.message,
+                        }, function(err, result) {
+                            assert.equal(null, err);
+                            console.log('Item inserted ' + doc.fname);
+                            db.close();
+                        });
+                    });
+                });
 
+                //------------------------------------------------------------------comment to test function (don't send a message)---------------------------
 
-
-
+                var errors = false;
+                if(errors){
+                    req.session.errors = errors;
+                    req.session.success = false;
+                }else{
+                    req.session.success = true;
+                }
+                console.log("Send multiple recipients complete !!!");
                 res.redirect('/home');
-
-
-
-
 
             });
         } catch (e) {
@@ -176,7 +216,7 @@ app.post('/loginCheck', (req, res) => {
             if (resultArray == '') {
                 res.redirect('/');
             } else {
-                res.redirect('/smsservice');
+                res.redirect('/home');
             }
         });
     });

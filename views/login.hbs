@@ -23,7 +23,7 @@
   </script>
 </head>
 <body>
-    <br><br>
+    
     <div class="form">
         <ul class="tab-group">
             <li class="tab active"><a href="#login">Log In</a></li>
@@ -52,7 +52,7 @@
             </div>
             <div id="signup">
                 <h1>Sign Up to SMS-Service</h1>
-                <form action="/regisToDB" method="post" name="regisForm" onsubmit="return valform()">
+                <form action="/regisToDB" method="post" name="regisForm" onsubmit="return confirm('Do you really want to registation?');">
                     <div class="top-row">
                         <div class="field-wrap">
                             <label>First Name<span class="req">*</span></label>
@@ -85,7 +85,7 @@
     </div>
 
     {{> addJS}}
-    <footer style="position: fixed; bottom: 0px; width: 100%; height: 50px; background-color: rgba(19, 35, 47, 0.9);">
+    <footer style="position: fixed; bottom: 0px; width: 100%; height: 40px; background-color: rgba(19, 35, 47, 0.9);">
         <center>
             <font color="#1ab188">
                 Developed by Suphachok Noopan 5730211009 - Copyright &copy; {{getCurrentYear}} 

@@ -48,7 +48,21 @@
             <h3>Welcome to SMS-Service</h3>
         </div>
         <div class="card-body">
-            
+            {{# if success}}
+                <div class="alert alert-success" role="alert">
+                    Send message complete.
+                </div>
+            {{else}}
+                {{# if errors}}
+                    <div class="alert alert-danger" role="alert">
+                        <ul>
+                            {{# each errors}}
+                                <li>{{this.msg}}</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                {{/if}}
+            {{/if}}
 
             {{!-- <label class="custom-file">
                 <input type="file" id="file2" class="custom-file-input">

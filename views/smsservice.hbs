@@ -54,27 +54,27 @@
         </div>
         <div class="card-body">
             <h5>Recipient information</h5>
-            <form action="/sendsms" method="post">
+            <form action="/sendsms" method="post" onsubmit="return confirm('Do you really want to send a message?');">
                <div class="form-row">
                     <div class="form-group col-md-4 col-lg-4">
                         <label for="fname" class="col-form-label">Firstname</label>
-                        <input type="text" class="form-control" id="fname" name="fname" placeholder="Firstname">
+                        <input type="text" class="form-control" id="fname" name="fname" placeholder="Firstname" required>
                     </div>
                     <div class="form-group col-md-4 col-lg-4">
                         <label for="lname" class="col-form-label">Lastname</label>
-                        <input type="text" class="form-control" id="lname" name="lname" placeholder="Lastname">
+                        <input type="text" class="form-control" id="lname" name="lname" placeholder="Lastname" required>
                     </div>
                     <div class="form-group col-md-4 col-lg-4">
                         <label for="telno" class="col-form-label">Telephone number</label>
-                        <input type="text" class="form-control" id="telno" name="telno" placeholder="66812345678">
+                        <input type="text" class="form-control" id="telno" name="telno" placeholder="66812345678" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="msg_data">Message</label>
-                    <textarea class="form-control" id="msg_data" name="msg_data" rows="5" style="resize: none;" placeholder="Message to send"></textarea>
+                    <textarea class="form-control" id="msg_data" name="msg_data" rows="5" style="resize: none;" placeholder="Message to send" required></textarea>
                 </div>
                 <div align="center">
-                    <input type="submit" class="btn btn-primary" value="Send Message" onsubmit="confirmSendSMS()">
+                    <input type="submit" class="btn btn-primary" value="Send Message">
                 </div>
             </form>
             {{!-- <label class="custom-file">
