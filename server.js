@@ -1,11 +1,11 @@
 const express = require('express');
 const hbs = require('hbs');
-const fs = require('fs');
+// const fs = require('fs');
 var multer = require('multer');
 var xlstojson = require("xls-to-json-lc");
 var xlsxtojson = require("xlsx-to-json-lc");
 var MongoClient = require('mongodb').MongoClient;
-var objectId = require('mongodb').ObjectID;
+// var objectId = require('mongodb').ObjectID;
 var assert = require('assert');
 var bodyParser = require('body-parser');
 var app = express();
@@ -44,7 +44,7 @@ app.get('/smsservice', (req, res) => {
 app.post('/sendsms', (req, res) => {
     //https://www.intellisoftware.co.uk
     var intelliSMS = require('intellisms');
-    var sms = new intelliSMS('smshospital', 'smsservice');
+    var sms = new intelliSMS('smsservicehos', 'smsService2017');
     // console.log(req.body.telno + " " + req.body.msg_data);
     //number and message 
     sms.SendMessage({ to: req.body.telno, text: req.body.msg_data }, function(err, id) {
@@ -114,7 +114,7 @@ app.post('/upload', function(req, res) {
                 // console.log(result[0]);
                 for (var i = 0; i < result.length; i++) {
                     var intelliSMS = require('intellisms');
-                    var sms = new intelliSMS('smshospital', 'smsservice');
+                    var sms = new intelliSMS('smsservicehos', 'smsService2017');
                     // console.log(req.body.telno + " " + req.body.msg_data);
                     //number and message 
                     var list = result[i];
