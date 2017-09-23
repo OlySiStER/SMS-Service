@@ -18,7 +18,7 @@ app.use(expressValidator());
 hbs.registerPartials(__dirname + '/views/partials')
 app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/assets'));
-app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false}));
+app.use(expressSession({ secret: 'max', saveUninitialized: false, resave: false }));
 
 var url = 'mongodb://localhost:27017/smsservice';
 
@@ -27,31 +27,53 @@ hbs.registerHelper('getCurrentYear', () => {
 });
 
 app.get('/', (req, res) => {
-    res.render('login.hbs');
+    res.render('login.hbs', {
+        loginCheck: req.session.loginCheck,
+        regisComplete: req.session.regisComplete
+    });
+    req.session.regisComplete = null;
+    req.session.loginCheck = null;
+    req.session.loginComplete = null;
 });
 
+
 app.get('/home', (req, res) => {
-    res.render('home.hbs', {
-        title: 'Form Validation', 
-        success: req.session.success, 
-        errors: req.session.errors
-    });
+    if (req.session.loginComplete) {
+        res.render('home.hbs', {
+            success: req.session.success,
+            errors: req.session.errors
+        });
+    } else {
+        res.redirect('/');
+    }
     req.session.errors = null;
-    req.session.success  = null;
+    req.session.success = null;
 });
 
 
 
 app.get('/about', (req, res) => {
-    res.render('about.hbs');
+    if (req.session.loginComplete) {
+        res.render('about.hbs');
+    } else {
+        res.redirect('/');
+    }
 });
 
 app.get('/contact', (req, res) => {
-    res.render('contact.hbs');
+    if (req.session.loginComplete) {
+        res.render('contact.hbs');
+    } else {
+        res.redirect('/');
+    }
 });
 
 app.get('/smsservice', (req, res) => {
-    res.render('smsservice.hbs');
+    if (req.session.loginComplete) {
+        res.render('smsservice.hbs');
+    } else {
+        res.redirect('/');
+    }
 });
 
 app.post('/sendsms', (req, res) => {
@@ -67,7 +89,7 @@ app.post('/sendsms', (req, res) => {
     //     console.log("Send message to " + req.body.fname + " " + req.body.lname + " " + req.body.telno)
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
-        db.collection('recipientList').insertOne({
+        db.collection('sendMessageLog').insertOne({
             // no: list.no,
             fname: req.body.fname,
             lname: req.body.lname,
@@ -79,21 +101,25 @@ app.post('/sendsms', (req, res) => {
             db.close();
         });
     });
-        var errors = false;
-        if(errors){
-            req.session.errors = errors;
-            req.session.success = false;
-        }else{
-            req.session.success = true;
-        }
-        console.log("Send one recipients complete !!!");
-        res.redirect('/home');
+    var errors = false;
+    if (errors) {
+        req.session.errors = errors;
+        req.session.success = false;
+    } else {
+        req.session.success = true;
+    }
+    console.log("Send one recipients complete !!!");
+    res.redirect('/home');
     // });
     //------------------------------------------------------------------comment to test function (don't send a message)---------------------------
 });
 
 app.get('/smsservice_multiple', (req, res) => {
-    res.render('smsservice_multiple.hbs');
+    if (req.session.loginComplete) {
+        res.render('smsservice_multiple.hbs');
+    } else {
+        res.redirect('/');
+    }
 });
 
 var storage = multer.diskStorage({ //multers disk storage settings
@@ -102,7 +128,8 @@ var storage = multer.diskStorage({ //multers disk storage settings
     },
     filename: function(req, file, cb) {
         var datetimestamp = Date.now();
-        cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1])
+        // cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1])
+        cb(null, datetimestamp + '-' + file.originalname);
     }
 });
 
@@ -162,10 +189,10 @@ app.post('/upload', function(req, res) {
                     //     // res.redirect('/smsservice');
                     // });  
                 }
-                result.forEach(function (doc) {
+                result.forEach(function(doc) {
                     MongoClient.connect(url, function(err, db) {
                         assert.equal(null, err);
-                        db.collection('recipientList').insert({
+                        db.collection('sendMessageLog').insert({
                             fname: doc.fname,
                             lname: doc.lname,
                             tel: doc.tel,
@@ -181,10 +208,10 @@ app.post('/upload', function(req, res) {
                 //------------------------------------------------------------------comment to test function (don't send a message)---------------------------
 
                 var errors = false;
-                if(errors){
+                if (errors) {
                     req.session.errors = errors;
                     req.session.success = false;
-                }else{
+                } else {
                     req.session.success = true;
                 }
                 console.log("Send multiple recipients complete !!!");
@@ -214,8 +241,10 @@ app.post('/loginCheck', (req, res) => {
         }, function() {
             db.close();
             if (resultArray == '') {
+                req.session.loginCheck = true;
                 res.redirect('/');
             } else {
+                req.session.loginComplete = true;
                 res.redirect('/home');
             }
         });
@@ -232,12 +261,14 @@ app.post('/regisToDB', (req, res) => {
             pass: req.body.passRegis
         }, function(err, result) {
             assert.equal(null, err);
+            req.session.regisComplete = true;
             console.log('Regis complete - insert user to db');
             db.close();
+            res.redirect('/');
         });
     });
 
-    res.redirect('/');
+    // res.redirect('/');
 });
 
 app.get('/bad', (req, res) => {

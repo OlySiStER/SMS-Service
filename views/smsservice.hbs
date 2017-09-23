@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     {{!-- <link rel="stylesheet" href="css/style.css"> --}}
     <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="https://use.fontawesome.com/c151f7beb6.js"></script>
     <script>
     function confirmSendSMS(){
         alert("Are you sure to send a message?");
@@ -27,12 +28,21 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/home"><font style="color: #1ab188;">Home</font> <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <font style="color: #1ab188;">INTELLI SMS</font>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="smsservice"><font style="color: #1ab188;">One Recipient</font></a>
+                        <a class="dropdown-item" href="smsservice_multiple"><font style="color: #1ab188;">Multi Recipient</font></a>
+                    </div>
+                </li>
+                {{!-- <li class="nav-item">
                     <a class="nav-link" href="/smsservice"><font style="color: white;">One Recipient</font> <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/smsservice_multiple"><font style="color: #1ab188;">Multi Recipient</font> <span class="sr-only">(current)</span></a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" href="/about"><font style="color: #1ab188;">About</font></a>
                 </li>
@@ -40,7 +50,7 @@
                     <a class="nav-link" href="/contact"><font style="color: #1ab188;">Contact</font></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/"><font style="color: #1ab188;">Logout</font></a>
+                    <a class="nav-link" href="/"><font style="color: #1ab188;"><i class="fa fa-sign-out fa-md" aria-hidden="true"></i> Logout</font></a>
                 </li>
             </ul>
         </div>

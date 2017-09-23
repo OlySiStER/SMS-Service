@@ -14,7 +14,7 @@
         var newPass = document.forms["regisForm"]["passRegis"].value;
         var conNewPass = document.forms["regisForm"]["confirmPassRegis"].value;
         if(newPass == conNewPass){
-        alert("Registation Success");
+        return confirm('Do you really want to registation?');
         }else {
         alert("Password Not Match !");
         return false;
@@ -32,6 +32,20 @@
         <div class="tab-content">
             <div id="login">
                 <h1>Welcome to SMS-Service</h1>
+
+                
+                    {{# if loginCheck}}
+                        <div class="alert alert-danger" role="alert">
+                            <center>Username or password wrong !!!</center>
+                        </div>
+                    {{/if}}
+
+                    {{# if regisComplete}}
+                        <div class="alert alert-success" role="alert">
+                            <center>Register complete !!!</center>
+                        </div>
+                    {{/if}}
+                
 
                 <form action="/loginCheck" method="post">
                     <div class="field-wrap">
@@ -52,7 +66,10 @@
             </div>
             <div id="signup">
                 <h1>Sign Up to SMS-Service</h1>
-                <form action="/regisToDB" method="post" name="regisForm" onsubmit="return confirm('Do you really want to registation?');">
+                <form action="/regisToDB" method="post" name="regisForm" 
+                {{!-- onsubmit="return confirm('Do you really want to registation?');" --}}
+                onsubmit="return valform()"
+                >
                     <div class="top-row">
                         <div class="field-wrap">
                             <label>First Name<span class="req">*</span></label>
@@ -76,7 +93,7 @@
                         <label>Confirm A Password<span class="req">*</span></label>
                         <input type="password" name="confirmPassRegis" required autocomplete="off" />
                     </div>
-                    <button type="submit" class="button button-block" />Registation</button>
+                    <button type="submit" class="button button-block"/>Registation</button>
                 </form>
             </div>
         </div>

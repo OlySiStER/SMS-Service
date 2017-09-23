@@ -2734,6 +2734,7 @@ tbody.collapse.show {
     border-top: 0.3em solid;
     border-right: 0.3em solid transparent;
     border-left: 0.3em solid transparent;
+    color: #1ab188;
 }
 
 .dropdown-toggle:empty::after {
@@ -2761,10 +2762,10 @@ tbody.collapse.show {
     padding: 0.5rem 0;
     margin: 0.125rem 0 0;
     font-size: 1rem;
-    color: #212529;
+    color: #1ab188;
     text-align: left;
     list-style: none;
-    background-color: #fff;
+    background-color: rgba(19, 35, 47, 0.9);
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 0.25rem;
