@@ -23,7 +23,11 @@
   </script>
 </head>
 <body>
-    
+    {{!-- {{# if alertLogin}}
+        <script>
+            alert("Please login !!!");
+        </script>
+    {{/if}} --}}
     <div class="form">
         <ul class="tab-group">
             <li class="tab active"><a href="#login">Log In</a></li>
@@ -45,6 +49,8 @@
                             <center>Register complete !!!</center>
                         </div>
                     {{/if}}
+
+                    
                 
 
                 <form action="/loginCheck" method="post">
@@ -64,12 +70,10 @@
                     <button class="button button-block" />Log In</button>
                 </form>
             </div>
+
             <div id="signup">
                 <h1>Sign Up to SMS-Service</h1>
-                <form action="/regisToDB" method="post" name="regisForm" 
-                {{!-- onsubmit="return confirm('Do you really want to registation?');" --}}
-                onsubmit="return valform()"
-                >
+                <form action="/regisToDB" method="post" name="regisForm" onsubmit="return valform()">
                     <div class="top-row">
                         <div class="field-wrap">
                             <label>First Name<span class="req">*</span></label>

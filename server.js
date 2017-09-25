@@ -27,10 +27,13 @@ hbs.registerHelper('getCurrentYear', () => {
 });
 
 app.get('/', (req, res) => {
+    // console.log(req.session.alertLogin);
     res.render('login.hbs', {
         loginCheck: req.session.loginCheck,
-        regisComplete: req.session.regisComplete
+        regisComplete: req.session.regisComplete,
+        alertLogin: req.session.alertLogin
     });
+    req.session.alertLogin = null;
     req.session.regisComplete = null;
     req.session.loginCheck = null;
     req.session.loginComplete = null;
@@ -44,18 +47,18 @@ app.get('/home', (req, res) => {
             errors: req.session.errors
         });
     } else {
+        req.session.alertLogin = true;
         res.redirect('/');
     }
     req.session.errors = null;
     req.session.success = null;
 });
 
-
-
 app.get('/about', (req, res) => {
     if (req.session.loginComplete) {
         res.render('about.hbs');
     } else {
+        req.session.alertLogin = true;
         res.redirect('/');
     }
 });
@@ -64,6 +67,7 @@ app.get('/contact', (req, res) => {
     if (req.session.loginComplete) {
         res.render('contact.hbs');
     } else {
+        req.session.alertLogin = true;
         res.redirect('/');
     }
 });
@@ -72,6 +76,7 @@ app.get('/smsservice', (req, res) => {
     if (req.session.loginComplete) {
         res.render('smsservice.hbs');
     } else {
+        req.session.alertLogin = true;
         res.redirect('/');
     }
 });
@@ -118,6 +123,7 @@ app.get('/smsservice_multiple', (req, res) => {
     if (req.session.loginComplete) {
         res.render('smsservice_multiple.hbs');
     } else {
+        req.session.alertLogin = true;
         res.redirect('/');
     }
 });
