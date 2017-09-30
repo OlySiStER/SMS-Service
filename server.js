@@ -39,7 +39,6 @@ app.get('/', (req, res) => {
     req.session.loginComplete = null;
 });
 
-
 app.get('/home', (req, res) => {
     if (req.session.loginComplete) {
         res.render('home.hbs', {
