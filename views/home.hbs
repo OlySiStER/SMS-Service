@@ -32,6 +32,15 @@
                         <a class="dropdown-item" href="smsservice_multiple"><font style="color: #1ab188;">Multi Recipient</font></a>
                     </div>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <font style="color: #1ab188;">SMS MATRIX</font>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="matrix"><font style="color: #1ab188;">One Recipient</font></a>
+                        <a class="dropdown-item" href="matrix_multiple"><font style="color: #1ab188;">Multi Recipient</font></a>
+                    </div>
+                </li>
                 {{!-- <li class="nav-item">
                     <a class="nav-link" href="/smsservice"><font style="color: #1ab188;">One Recipient</font> <span class="sr-only">(current)</span></a>
                 </li>
@@ -72,6 +81,9 @@
                         </ul>
                     </div>
                 {{/if}}
+            {{/if}}
+            {{# if limitBalance}}
+                <div class="alert alert-danger" role="alert">You're out of credit</div>
             {{/if}}
 
             
